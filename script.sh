@@ -2,6 +2,10 @@
 echo "create namespace"
 kubectl create namespace victoria-monitoring
 
+CLUSTER_NAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].name}')
+YAML_FILE="./victoria-metrics/vmagent.yaml"
+sed -i -E "s/(k8s_cluster:)[[:space:]]+.*/\1 ${CLUSTER_NAME}/" "$YAML_FILE"
+
 echo "install vmoperator"
 helm install vmoperator -n victoria-monitoring ./victoria-metrics/victoria-metrics-operator-0.47.0.tgz -f ./victoria-metrics/values.yaml \
   --set operator.enabled=true
