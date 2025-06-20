@@ -35,6 +35,15 @@ kubectl -n kube-system get configmap kube-proxy -o json | \
 echo "rollout kube-proxy"
 kubectl rollout restart -n kube-system ds kube-proxy
 
+echo "patch felix"
+kubectl patch felixconfiguration default --type merge --patch '{
+  "spec": {
+    "prometheusMetricsEnabled": true,
+    "prometheusMetricsHost": "0.0.0.0",
+    "prometheusMetricsPort": 9091
+  }
+}'
+
 echo "install etcd-proxy-server"
 kubectl apply  -n victoria-monitoring -f ./etcd-proxy-server/
 ########################
