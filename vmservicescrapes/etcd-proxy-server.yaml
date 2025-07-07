@@ -8,7 +8,7 @@ spec:
   jobLabel: etcd-proxy-server
   namespaceSelector:
     matchNames:
-    - monitoring
+    - victoria-monitoring
   selector:
     matchLabels:
       app: metrics
